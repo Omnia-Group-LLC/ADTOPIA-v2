@@ -1,7 +1,7 @@
-// POC: Minimal entry point to test auth module
+// AdTopia v2 Entry Point
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
+import { Router } from './router'
 import './index.css'
 
 console.log('🚀 AdTopia v2 - Starting app...')
@@ -20,11 +20,11 @@ try {
   
   root.render(
     <React.StrictMode>
-      <App />
+      <Router />
     </React.StrictMode>
   )
   
-  console.log('✅ React app rendered')
+  console.log('✅ React app rendered with Router')
 } catch (error) {
   console.error('❌ Error rendering app:', error)
   throw error
