@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { AuthModal } from './AuthModal';
-import { Button } from '@/components/ui/button';
+import { Button } from '@modules/ui';
 
 interface ProtectedRouteProps {
   children: ReactNode;

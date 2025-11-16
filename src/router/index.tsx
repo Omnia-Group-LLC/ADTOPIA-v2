@@ -1,8 +1,10 @@
 // React Router setup for ADTOPIA-v2
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { AuthProvider } from '@modules/auth';
+import { ProtectedRoute } from '@modules/auth/components';
+import { AuthPage, DashboardPage } from '../pages';
 import App from '../App';
 
-// Placeholder routes - will be expanded as modules migrate
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -10,11 +12,27 @@ export const router = createBrowserRouter([
   },
   {
     path: '/auth',
-    element: <App />, // Will be replaced with AuthPage component
+    element: <AuthPage />,
+  },
+  {
+    path: '/dashboard',
+    element: (
+      <ProtectedRoute>
+        <DashboardPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '*',
+    element: <Navigate to="/" replace />,
   },
 ]);
 
 export function Router() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
