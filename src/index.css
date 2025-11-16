@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Beautiful SaaS-style design system for Ad Cards platform */
+
+@layer base {
+  * {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  
+  :root {
+    /* Gamma cosmic theme */
+    --cosmic-navy: 228 75% 11%;
+    --neon-green: 102 100% 54%;
+    --cosmic-glow: 228 70% 20%;
+    
+    /* Core backgrounds and surfaces */
+    --background: 220 13% 97%;
+    --foreground: 220 9% 20%;
+    --surface: 0 0% 100%;
+    --surface-elevated: 0 0% 100%;
+
+    /* Brand colors - Trust-first palette with urgency accents */  
+    --primary: 220 100% 20%;
+    --primary-hover: 220 100% 25%;
+    --primary-glow: 220 100% 70%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 95%;
+    --secondary-hover: 220 15% 90%;
+    --secondary-foreground: 220 9% 20%;
+
+    /* Success/Error states */
+    --success: 142 76% 36%;
+    --success-hover: 142 76% 31%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 30 100% 50%;
+    --warning-hover: 30 100% 45%;
+    --warning-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-hover: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Neutral colors */
+    --muted: 220 13% 96%;
+    --muted-hover: 220 13% 91%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 220 13% 91%;
+    --accent-hover: 220 13% 86%;
+    --accent-foreground: 220 9% 20%;
+
+    /* UI elements */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 235 85% 65%;
+    --card: 0 0% 100%;
+    --card-hover: 220 13% 98%;
+    --card-foreground: 220 9% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 9% 20%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(220 100% 20%), hsl(142 76% 36%));
+    --gradient-secondary: linear-gradient(135deg, hsl(220 13% 97%), hsl(220 13% 94%));
+    --gradient-hero: linear-gradient(135deg, hsl(220 100% 20%) 0%, hsl(142 76% 36%) 50%, hsl(30 100% 50%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(220 13% 98%) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(220 13% 69% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(220 13% 69% / 0.1), 0 2px 4px -1px hsl(220 13% 69% / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(220 13% 69% / 0.1), 0 4px 6px -2px hsl(220 13% 69% / 0.05);
+    --shadow-xl: 0 20px 25px -5px hsl(220 13% 69% / 0.1), 0 10px 10px -5px hsl(220 13% 69% / 0.04);
+    --shadow-primary: 0 10px 30px -10px hsl(235 85% 65% / 0.3);
+    --shadow-primary-lg: 0 25px 50px -12px hsl(235 85% 65% / 0.25);
+
+    /* Animations */
+    --transition-base: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Mobile-specific design tokens */
+    --mobile-padding: 1rem;
+    --mobile-gap: 0.75rem;
+    --touch-target-min: 44px;
+    
+    /* Mobile typography scale */
+    --text-xs-mobile: 0.75rem;   /* 12px */
+    --text-sm-mobile: 0.875rem;  /* 14px */
+    --text-base-mobile: 1rem;    /* 16px minimum for readability */
+    --text-lg-mobile: 1.125rem;  /* 18px */
+    --text-xl-mobile: 1.25rem;   /* 20px */
+  }
+
+  .dark {
+    /* Core backgrounds and surfaces */
+    --background: 220 13% 9%;
+    --foreground: 220 13% 95%;
+    --surface: 220 13% 11%;
+    --surface-elevated: 220 13% 13%;
+
+    /* Brand colors - Adapted for dark mode */
+    --primary: 235 85% 70%;
+    --primary-hover: 235 85% 75%;
+    --primary-glow: 235 85% 85%;
+    --primary-foreground: 220 13% 9%;
+
+    --secondary: 220 13% 15%;
+    --secondary-hover: 220 13% 20%;
+    --secondary-foreground: 220 13% 95%;
+
+    /* Success/Error states */
+    --success: 142 76% 41%;
+    --success-hover: 142 76% 46%;
+    --success-foreground: 220 13% 9%;
+    
+    --warning: 38 92% 55%;
+    --warning-hover: 38 92% 60%;
+    --warning-foreground: 220 13% 9%;
+    
+    --destructive: 0 84% 65%;
+    --destructive-hover: 0 84% 70%;
+    --destructive-foreground: 220 13% 9%;
+
+    /* Neutral colors */
+    --muted: 220 13% 15%;
+    --muted-hover: 220 13% 20%;
+    --muted-foreground: 220 9% 65%;
+
+    --accent: 220 13% 18%;
+    --accent-hover: 220 13% 23%;
+    --accent-foreground: 220 13% 95%;
+
+    /* UI elements */
+    --border: 220 13% 20%;
+    --input: 220 13% 20%;
+    --ring: 235 85% 70%;
+    --card: 220 13% 11%;
+    --card-hover: 220 13% 13%;
+    --card-foreground: 220 13% 95%;
+
+    --popover: 220 13% 11%;
+    --popover-foreground: 220 13% 95%;
+
+    /* Gradients - Dark mode versions */
+    --gradient-primary: linear-gradient(135deg, hsl(235 85% 70%), hsl(250 85% 75%));
+    --gradient-secondary: linear-gradient(135deg, hsl(220 13% 11%), hsl(220 13% 15%));
+    --gradient-hero: linear-gradient(135deg, hsl(235 85% 70%) 0%, hsl(250 85% 75%) 50%, hsl(280 85% 80%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(220 13% 11%) 0%, hsl(220 13% 13%) 100%);
+    
+    /* Shadows - Darker for dark mode */
+    --shadow-sm: 0 1px 2px 0 hsl(220 13% 0% / 0.3);
+    --shadow-md: 0 4px 6px -1px hsl(220 13% 0% / 0.4), 0 2px 4px -1px hsl(220 13% 0% / 0.3);
+    --shadow-lg: 0 10px 15px -3px hsl(220 13% 0% / 0.4), 0 4px 6px -2px hsl(220 13% 0% / 0.3);
+    --shadow-xl: 0 20px 25px -5px hsl(220 13% 0% / 0.4), 0 10px 10px -5px hsl(220 13% 0% / 0.3);
+    --shadow-primary: 0 10px 30px -10px hsl(235 85% 70% / 0.4);
+    --shadow-primary-lg: 0 25px 50px -12px hsl(235 85% 70% / 0.35);
+
+    /* Sidebar for dark mode compatibility */
+    --sidebar-background: 220 13% 9%;
+    --sidebar-foreground: 220 13% 95%;
+    --sidebar-primary: 235 85% 70%;
+    --sidebar-primary-foreground: 220 13% 9%;
+    --sidebar-accent: 220 13% 15%;
+    --sidebar-accent-foreground: 220 13% 95%;
+    --sidebar-border: 220 13% 20%;
+    --sidebar-ring: 235 85% 70%;
+    font-feature-settings: "cv11", "ss01";
+    font-variation-settings: "opsz" 32;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+  }
+}
+
+/* Mobile-optimized button sizing */
+.btn-mobile {
+  min-height: var(--touch-target-min);
+  padding: 0.75rem 1rem;
+  font-size: var(--text-base-mobile);
+}
+
+/* Touch target utilities */
+.min-h-touch {
+  min-height: 44px;
+}
+
+/* Safe area utilities for iOS */
+.pb-safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
+}
+
+.pt-safe-top {
+  padding-top: env(safe-area-inset-top, 1rem);
+}
+
+@layer utilities {
+  /* Gradient utilities */
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .bg-gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+  
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+
+  /* Shadow utilities */
+  .shadow-primary {
+    box-shadow: var(--shadow-primary);
+  }
+  
+  .shadow-primary-lg {
+    box-shadow: var(--shadow-primary-lg);
+  }
+
+  /* Animation utilities */
+  .transition-base {
+    transition: var(--transition-base);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* Glassmorphism effect */
+  .glass {
+  }
+}
