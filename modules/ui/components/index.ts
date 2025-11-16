@@ -21,7 +21,6 @@ export { Popover, PopoverContent, PopoverTrigger } from './popover';
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
 export { useToast } from './use-toast';
 export { Toaster } from './toaster';
-export { Toaster } from './toaster';
 export { Separator } from './separator';
 export { ScrollArea } from './scroll-area';
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './accordion';

@@ -1,3 +1,2 @@
-import { useToast, toast } from "@/hooks/use-toast";
-
-export { useToast, toast };
+// Re-export from src/hooks/use-toast (temporary - will consolidate)
+export { useToast, toast } from "../../../src/hooks/use-toast";
