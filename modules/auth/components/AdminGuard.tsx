@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TestPasscodeEntry } from '@/components/admin/TestPasscodeEntry';
-import { hasAdminAccess } from '@/lib/utils/adminAccess';
+import { TestPasscodeEntry } from '@/components/ui/admin/TestPasscodeEntry';
+import { hasAdminAccess } from '@modules/core/utils/adminAccess';
 
 interface AdminGuardProps {
   children: React.ReactNode;

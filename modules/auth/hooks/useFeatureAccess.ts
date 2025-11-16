@@ -39,9 +39,44 @@ export function useFeatureAccess() {
     try {
       setLoading(true);
       
+      if (!user?.id) {
+        setUserAccess(null);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('user_access')
         .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        setUserAccess(data as UserAccess);
+      } else {
+        // Default to FREE tier if no access record found
+        setUserAccess({
+          id: '',
+          email: user?.email || '',
+          access_level: 'FREE',
+          features: {
+            ad_generation: false,
+            analytics_dashboard: false,
+            competitive_analysis: false,
+            a_b_testing: false,
+            api_access: false
+          },
+          usage_limits: {
+            ad_generations_per_month: 0,
+            analytics_requests_per_month: 0
+          },
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
+      }
     } catch (error) {
       console.error('Error fetching user access:', error);
       // Default to FREE tier if no access record found
@@ -68,6 +103,7 @@ export function useFeatureAccess() {
     }
   };
 
+  const checkFeatureAccess = (featureName: string): FeatureCheck => {
     if (!userAccess) {
       return {
         allowed: false,

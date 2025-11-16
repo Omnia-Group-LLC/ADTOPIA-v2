@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { useFeatureAccess, FeatureCheck } from '@/hooks/useFeatureAccess';
+import { useFeatureAccess, type FeatureCheck } from '../hooks/useFeatureAccess';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
