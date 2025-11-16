@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@modules/api/supabase/client';
 import type { User } from '@modules/core/types';
 
 export interface AuthContextType {
@@ -29,62 +30,73 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing token on mount
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      verifyToken(token);
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
-  const verifyToken = async (token: string) => {
-    try {
-      const response = await fetch('/api/auth/verify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      } else {
-        localStorage.removeItem('auth_token');
+    // Check for existing Supabase session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        // Map Supabase user to our User type
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email || '',
+          tenant_id: session.user.user_metadata?.tenant_id || '',
+          mfa_enabled: false,
+          email_verified: session.user.email_confirmed_at !== null,
+          created_at: session.user.created_at || new Date().toISOString(),
+        });
       }
-    } catch (error) {
-      console.error('Token verification failed:', error);
-      localStorage.removeItem('auth_token');
-    } finally {
       setLoading(false);
-    }
-  };
+    });
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email || '',
+          tenant_id: session.user.user_metadata?.tenant_id || '',
+          mfa_enabled: false,
+          email_verified: session.user.email_confirmed_at !== null,
+          created_at: session.user.created_at || new Date().toISOString(),
+        });
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const login = async (email: string, password: string): Promise<{ success: boolean; message?: string }> => {
     try {
       setLoading(true);
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        localStorage.setItem('auth_token', data.token);
-        setUser(data.user);
-        return { success: true };
-      } else {
-        return { success: false, message: data.message };
+      if (error) {
+        return { success: false, message: error.message };
       }
-    } catch (error) {
+
+      if (data.user) {
+        setUser({
+          id: data.user.id,
+          email: data.user.email || '',
+          name: data.user.user_metadata?.name || data.user.email || '',
+          tenant_id: data.user.user_metadata?.tenant_id || '',
+          mfa_enabled: false,
+          email_verified: data.user.email_confirmed_at !== null,
+          created_at: data.user.created_at || new Date().toISOString(),
+        });
+        return { success: true };
+      }
+
+      return { success: false, message: 'Login failed' };
+    } catch (error: any) {
       console.error('Login error:', error);
-      return { success: false, message: 'Login failed. Please try again.' };
+      return { success: false, message: error.message || 'Login failed. Please try again.' };
     } finally {
       setLoading(false);
     }
@@ -98,63 +110,73 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   ): Promise<{ success: boolean; message?: string }> => {
     try {
       setLoading(true);
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ inviteCode, email, password, name })
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+            tenant_id: inviteCode, // Using inviteCode as tenant_id for now
+          }
+        }
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        localStorage.setItem('auth_token', data.token);
-        setUser(data.user);
-        return { success: true };
-      } else {
-        return { success: false, message: data.message };
+      if (error) {
+        return { success: false, message: error.message };
       }
-    } catch (error) {
+
+      if (data.user) {
+        setUser({
+          id: data.user.id,
+          email: data.user.email || '',
+          name: data.user.user_metadata?.name || name,
+          tenant_id: data.user.user_metadata?.tenant_id || inviteCode,
+          mfa_enabled: false,
+          email_verified: false,
+          created_at: data.user.created_at || new Date().toISOString(),
+        });
+        return { success: true };
+      }
+
+      return { success: false, message: 'Registration failed' };
+    } catch (error: any) {
       console.error('Registration error:', error);
-      return { success: false, message: 'Registration failed. Please try again.' };
+      return { success: false, message: error.message || 'Registration failed. Please try again.' };
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('auth_token');
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
   };
 
   const updateUser = async (updates: Partial<User>): Promise<{ success: boolean; message?: string }> => {
     try {
-      const token = localStorage.getItem('auth_token');
-      if (!token) {
-        return { success: false, message: 'Not authenticated' };
-      }
-
-      const response = await fetch('/api/auth/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(updates)
+      const { data, error } = await supabase.auth.updateUser({
+        data: {
+          name: updates.name,
+          tenant_id: updates.tenant_id,
+        }
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        setUser(data.user);
-        return { success: true };
-      } else {
-        return { success: false, message: data.message };
+      if (error) {
+        return { success: false, message: error.message };
       }
-    } catch (error) {
-      console.error('Update user error:', error);
+
+      if (data.user && user) {
+        setUser({
+          ...user,
+          ...updates,
+        });
+        return { success: true };
+      }
+
       return { success: false, message: 'Failed to update user' };
+    } catch (error: any) {
+      console.error('Update user error:', error);
+      return { success: false, message: error.message || 'Failed to update user' };
     }
   };
 

@@ -32,8 +32,12 @@ export default defineConfig({
         if (id === '@qdrant/js-client-rest' || id.startsWith('@qdrant/')) {
           return true;
         }
+        // Externalize bcrypt and jsonwebtoken (server-side only, used in Edge Functions)
+        if (id === 'bcrypt' || id === 'jsonwebtoken' || id.startsWith('bcrypt/') || id.startsWith('jsonwebtoken/')) {
+          return true;
+        }
         // Externalize Node.js built-ins
-        if (id.startsWith('node:') || ['fs', 'path', 'crypto', 'async_hooks'].includes(id)) {
+        if (id.startsWith('node:') || ['fs', 'path', 'crypto', 'async_hooks', 'process'].includes(id)) {
           return true;
         }
         return false;
@@ -47,7 +51,7 @@ export default defineConfig({
     },
     // Exclude mem0ai from pre-bundling (it's server-side only)
     commonjsOptions: {
-      exclude: ['mem0ai', 'mem0ai/oss', '@qdrant/js-client-rest'],
+      exclude: ['mem0ai', 'mem0ai/oss', '@qdrant/js-client-rest', 'bcrypt', 'jsonwebtoken'],
     },
   },
   
@@ -57,6 +61,8 @@ export default defineConfig({
       'mem0ai',
       'mem0ai/oss',
       '@qdrant/js-client-rest',
+      'bcrypt',
+      'jsonwebtoken',
     ],
   },
   
