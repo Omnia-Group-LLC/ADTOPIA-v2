@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@modules/api/supabase/client";
-import { Button } from "./button";
-import { Input } from "./input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card";
+import { Button } from "../button";
+import { Input } from "../input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../card";
 import { Alert, AlertDescription } from "../alert";
 import { Loader2, Lock, CheckCircle2, AlertCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "../use-toast";
 
 export function TestPasscodeEntry() {
   const [passcode, setPasscode] = useState("");
