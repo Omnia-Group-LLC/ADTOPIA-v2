@@ -60,24 +60,17 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    // Mobile project: Skip on macOS 12 (Playwright 1.44 compatibility issue)
-    // Use desktop viewport fallback instead
-    ...(process.platform === 'darwin' && (process.release?.name === 'darwin' || process.platform === 'darwin')
-      ? [
-          {
-            name: 'mobile-fallback',
-            use: {
-              ...devices['Desktop Chrome'],
-              viewport: { width: 390, height: 844 }, // iPhone 12 viewport
-            },
-          },
-        ]
-      : [
-          {
-            name: 'mobile',
-            use: { ...devices['iPhone 12'] },
-          },
-        ]),
+    // Mobile project: Use desktop viewport fallback on macOS (Playwright compatibility)
+    // This prevents orientation override errors on macOS 12+
+    {
+      name: 'mobile',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 390, height: 844 }, // iPhone 12 viewport dimensions
+        // Use actual iPhone device only if not on macOS
+        ...(process.platform !== 'darwin' ? devices['iPhone 12'] : {}),
+      },
+    },
     {
       name: 'ci',
       use: { 
