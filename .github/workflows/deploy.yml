@@ -85,6 +85,21 @@ jobs:
       - name: Build production bundle
         run: npm run build
       
+      - name: Seed database (preview deployments)
+        if: github.ref != 'refs/heads/main'
+        run: |
+          # Run Supabase migrations and seed data for preview deployments
+          # This ensures test data is available for E2E tests
+          if command -v supabase &> /dev/null; then
+            supabase db push --linked || echo "Supabase CLI not available, skipping seed"
+          else
+            echo "Supabase CLI not installed, skipping seed (test data may not be available)"
+          fi
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        continue-on-error: true
+      
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       
