@@ -1,44 +1,51 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright Configuration
+ * Playwright Configuration (2025 Best Practices)
  * 
- * Optimized for CI stability:
+ * Optimized for CI stability and Vercel preview testing:
+ * - Fully parallel execution
  * - Retries enabled in CI (2 retries)
- * - Reduced workers in CI (2 workers)
+ * - Reduced workers in CI (1 worker for stability)
+ * - HTML + JSON reporters for CI
+ * - Trace on first retry for debugging
  * - Screenshots/videos on failure
- * - Network idle waits where appropriate
+ * - Mobile testing support
  */
 export default defineConfig({
   testDir: './tests/e2e',
   
+  // Fully parallel execution
+  fullyParallel: true,
+  
+  // Forbid only in CI (prevent accidental .only())
+  forbidOnly: !!process.env.CI,
+  
   // Retry failed tests in CI
   retries: process.env.CI ? 2 : 0,
   
-  // Reduced workers in CI for stability
-  workers: process.env.CI ? 2 : undefined,
+  // Reduced workers in CI for stability (1 worker)
+  workers: process.env.CI ? 1 : undefined,
   
-  // Timeout settings
-  timeout: 30 * 1000,
-  expect: {
-    timeout: 5 * 1000,
-  },
-  
-  // Reporter configuration
-  reporter: process.env.CI ? 'html' : 'list',
+  // Reporter configuration: HTML + JSON for CI
+  reporter: [
+    ['html'],
+    ['json', { outputFile: 'test-results.json' }],
+    ...(process.env.CI ? [] : [['list']]),
+  ],
   
   use: {
-    // Base URL for tests
-    baseURL: process.env.BASE_URL || process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173',
+    // Base URL: Vercel URL or localhost
+    baseURL: process.env.VERCEL_URL || process.env.BASE_URL || process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173',
     
-    // Screenshots on failure
+    // Trace on first retry (for debugging failures)
+    trace: 'on-first-retry',
+    
+    // Screenshots only on failure
     screenshot: 'only-on-failure',
     
-    // Video on failure
+    // Video on failure (retain for CI artifacts)
     video: 'retain-on-failure',
-    
-    // Trace for debugging
-    trace: 'retain-on-failure',
     
     // Network idle timeout
     navigationTimeout: 30 * 1000,
@@ -54,6 +61,10 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
+      name: 'mobile',
+      use: { ...devices['iPhone 12'] },
+    },
+    {
       name: 'ci',
       use: { 
         ...devices['Desktop Chrome'],
@@ -64,21 +75,12 @@ export default defineConfig({
       name: 'vercel-preview',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: process.env.VERCEL_PREVIEW_URL || process.env.BASE_URL || 'http://localhost:5173',
+        baseURL: process.env.VERCEL_PREVIEW_URL || process.env.VERCEL_URL || process.env.BASE_URL || 'http://localhost:5173',
       },
     },
-    // Add other browsers as needed
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
   ],
   
-  // Web server configuration (for local testing)
+  // Web server configuration (for local testing only)
   webServer: process.env.CI ? undefined : {
     command: 'npm run dev',
     port: 5173,

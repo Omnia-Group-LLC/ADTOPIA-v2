@@ -13,6 +13,9 @@
   "functions": {
     "api/**/*.ts": {
       "runtime": "edge"
+    },
+    "middleware.ts": {
+      "runtime": "edge"
     }
   },
   "headers": [
