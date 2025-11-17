@@ -47,11 +47,25 @@ export default defineConfig({
     actionTimeout: 10 * 1000,
   },
   
-  // Projects for different browsers
+  // Projects for different browsers and environments
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'ci',
+      use: { 
+        ...devices['Desktop Chrome'],
+        baseURL: process.env.BASE_URL || process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173',
+      },
+    },
+    {
+      name: 'vercel-preview',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env.VERCEL_PREVIEW_URL || process.env.BASE_URL || 'http://localhost:5173',
+      },
     },
     // Add other browsers as needed
     // {
