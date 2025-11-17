@@ -1,6 +1,6 @@
 // UI Components Barrel Export
 export { Button } from './button';
-export { Dialog, DialogContent, DialogHeader, DialogTitle } from './dialog';
+export { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './dialog';
 export { Input } from './input';
 export { Card, CardContent, CardHeader, CardTitle } from './card';
 export { Badge } from './badge';

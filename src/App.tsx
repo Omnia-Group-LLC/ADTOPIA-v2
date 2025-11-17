@@ -29,6 +29,9 @@ function App() {
         <Link to="/dashboard">
           <Button>Go to Dashboard</Button>
         </Link>
+        <Link to="/gallery">
+          <Button>Go to Gallery</Button>
+        </Link>
       </div>
     </div>
   );
