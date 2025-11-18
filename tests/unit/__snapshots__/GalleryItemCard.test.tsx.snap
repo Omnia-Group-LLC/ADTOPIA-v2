@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`GalleryItemCard > should match snapshot for share button render 1`] = `
+<button
+  aria-label="Share Link"
+  class="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 text-xs absolute top-2 right-2 p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-all z-10 hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] hover:border-indigo-400 border border-transparent hover:scale-105"
+  data-testid="share-button"
+>
+  <svg
+    class="lucide lucide-share2 h-4 w-4 stroke-indigo-500 group-hover:stroke-indigo-400 transition-colors"
+    fill="none"
+    height="24"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    width="24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="18"
+      cy="5"
+      r="3"
+    />
+    <circle
+      cx="6"
+      cy="12"
+      r="3"
+    />
+    <circle
+      cx="18"
+      cy="19"
+      r="3"
+    />
+    <line
+      x1="8.59"
+      x2="15.42"
+      y1="13.51"
+      y2="17.49"
+    />
+    <line
+      x1="15.41"
+      x2="8.59"
+      y1="6.51"
+      y2="10.49"
+    />
+  </svg>
+</button>
+`;

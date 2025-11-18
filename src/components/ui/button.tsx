@@ -19,6 +19,8 @@ const buttonVariants = cva(
         warning: "bg-warning text-warning-foreground hover:bg-warning-hover shadow-md",
         premium: "bg-gradient-primary text-primary-foreground hover:opacity-90 shadow-primary hover:shadow-primary-lg transform hover:scale-[1.02] transition-bounce",
         glass: "glass text-foreground hover:bg-surface-elevated/90 shadow-lg hover:shadow-xl backdrop-blur-lg",
+        "create-ad": "bg-gradient-to-r from-primary to-accent text-primary-foreground hover:from-primary/90 hover:to-accent/90 shadow-lg hover:shadow-xl",
+        "ad-cta": "bg-gradient-to-r from-primary via-accent to-primary bg-size-200 bg-pos-0 hover:bg-pos-100 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-500",
       },
       size: {
         default: "h-11 px-6 py-2.5",

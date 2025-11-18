@@ -59,16 +59,16 @@ export function GalleryItemCard({ gallery, onCardClick }: GalleryItemCardProps) 
             data-testid="gallery-thumb"
           />
           
-          {/* Share Link Button - Glassy style with indigo glow */}
+          {/* Share Link Button - Glassy style with indigo glow and scale effect */}
           <Button
             data-testid="share-button"
             onClick={handleShare}
-            className="absolute top-2 right-2 p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-all z-10 hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] hover:border-indigo-400 border border-transparent"
+            className="absolute top-2 right-2 p-2 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-all z-10 hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] hover:border-indigo-400 border border-transparent hover:scale-105"
             size="sm"
             variant="ghost"
             aria-label="Share Link"
           >
-            <Share2 className="h-4 w-4 text-muted-foreground group-hover:text-indigo-500 transition-colors" />
+            <Share2 className="h-4 w-4 stroke-indigo-500 group-hover:stroke-indigo-400 transition-colors" />
           </Button>
         </div>
         

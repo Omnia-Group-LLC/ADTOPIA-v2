@@ -6,10 +6,10 @@ import './index.css'
 
 console.log('🚀 AdTopia v2 - Starting app...')
 
-const rootElement = document.getElementById('app-root')
+const rootElement = document.getElementById('root')
 
 if (!rootElement) {
-  throw new Error('Failed to find the root element with id "app-root"')
+  throw new Error('Failed to find the root element with id "root"')
 }
 
 console.log('✅ Root element found:', rootElement)

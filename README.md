@@ -133,11 +133,65 @@ The GitHub Actions workflow (`.github/workflows/deploy.yml`) automatically:
 # Preview deployment
 vercel
 
-# Production deployment
+# Production deployment (with Lighthouse audit)
+npm run deploy:prod
+
+# Or use Vercel CLI directly
 vercel --prod
 
 # Check deployment status
 vercel ls --prod
+```
+
+#### Production Deployment Script
+
+The `deploy:prod` script (`scripts/deploy-prod.sh`) provides:
+- ✅ Build verification before deployment
+- ✅ Automatic production URL extraction
+- ✅ Deployment hook triggering (if configured)
+- ✅ Lighthouse audit (if CLI installed)
+- ✅ Error handling and logging
+
+**Usage:**
+```bash
+# Set deployment hook URL (optional)
+export VERCEL_DEPLOY_HOOK_URL="https://api.vercel.com/v1/integrations/deploy/..."
+
+# Deploy
+npm run deploy:prod
+```
+
+**Output:**
+- Production URL displayed
+- Hook response logged to `deploy-hook-log.txt`
+- Lighthouse report saved to `lighthouse-report.html` (if available)
+
+### E2E Testing on Preview
+
+Test against Vercel preview deployments:
+
+```bash
+# Test against preview URL
+npm run test:e2e-preview
+
+# Or specify custom URL
+DEPLOYMENT_URL=https://your-preview.vercel.app npx playwright test --project=vercel-preview
+```
+
+### Batch Optimize Admin Tool
+
+Access the batch image optimization tool:
+
+```bash
+# Navigate to admin page
+http://localhost:5173/admin/batch-optimize
+
+# Features:
+# - Select all / individual images
+# - Sortable table (title, created, position)
+# - Batch optimize (concurrent 3)
+# - Progress tracking (0-68)
+# - Activity log integration
 ```
 
 ### Verification Checklist
